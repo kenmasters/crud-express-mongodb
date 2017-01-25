@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="public/main.js"></script>
+</head>
+<body>
+<h3>Home page</h3>
+<p>May Node and Express be with you.</p>
+<hr>
+<div>
+  <h2>Replace last quote written by Master Yoda with a quote written by Darth Vadar</h2>
+  <button id="update"> Darth Vadar invades! </button>
+</div>
+
+<div>
+  <h2>Delete Darth Vadar's first quote</h2>
+  <button id="delete"> Delete first Darth Vadar quote </button>
+</div>
+
+<h4>Lists of Quotes</h4>
+<ul class="quotes">
+  <% for(var i=0; i<quotes.length; i++) {%>
+    <li class="quote">
+      <span><%= quotes[i].name %></span>
+      <span><%= quotes[i].quote %></span>
+      <span><%= quotes[i]._id %></span>
+    </li>
+  <% } %>
+  </ul>
+<hr>
+<form action="/quotes" method="POST">
+  <input type="text" placeholder="name" name="name">
+  <input type="text" placeholder="quote" name="quote">
+  <button type="submit">Submit</button>
+</form>
+</body>
+</html>
