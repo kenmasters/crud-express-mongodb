@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient,
 const app = express();
 
 // Connection URL
-var url = 'mongodb://localhost:27017/star-wars-quotes';
+var url = 'mongodb://localhost:27017/quotes';
 var db = null;
 
 // Use connect method to connect to the Server 
@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 
 // Route
 app.get('/', (req, res) => {
-	var cursor = db.collection('quotes').find().toArray(function(err, results) {
+	var cursor = db.collection('quotes').find().sort({'_id':-1}).toArray(function(err, results) {
 	  // console.log(results)
 	  // send HTML file populated with quotes here
 		// res.sendFile(__dirname + '/index.html');
@@ -40,11 +40,19 @@ app.get('/', (req, res) => {
 	})
 });
 
+app.get('/quotes', (req, res) => {
+	res.render('quotes');
+});
+
 app.post('/quotes', (req, res) => {
-  db.collection('quotes').save(req.body, (err, result) => {
+	let quote = req.body;
+	quote.created_date = new Date();
+	console.log(quote);
+
+  db.collection('quotes').save(quote, (err, result) => {
     if (err) throw err
   	res.redirect('/');
-  })
+  });
 })
 
 app.put('/quotes', (req, res) => {
@@ -52,7 +60,8 @@ app.put('/quotes', (req, res) => {
 	  .findOneAndUpdate({name: 'Yoda'}, {
 	    $set: {
 	      name: req.body.name,
-	      quote: req.body.quote
+	      quote: req.body.quote,
+	      created_date: new Date()
 	    }
 	  }, {
 	    sort: {_id: -1},
@@ -79,5 +88,5 @@ app.delete('/quotes', (req, res) => {
 
 
 app.listen(3000, function() {
-	console.log('Listening on 3000...');
+	console.log('Listening on localhost:3000');
 });

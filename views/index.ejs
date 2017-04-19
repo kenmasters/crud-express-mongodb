@@ -3,37 +3,78 @@
 <head>
 	<title>Home</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/main.css" />
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
 	<script src="public/main.js"></script>
 </head>
 <body>
-<h3>Home page</h3>
-<p>May Node and Express be with you.</p>
-<hr>
-<div>
-  <h2>Replace last quote written by Master Yoda with a quote written by Darth Vadar</h2>
-  <button id="update"> Darth Vadar invades! </button>
+<div class="main">
+<div class="container">
+  
+  <h3>Quotes Collection</h3>
+  <p>May NodeJS and Express be with you.</p>
+  <hr>
+  <div>
+    <h2>Replace last quote written by Master Yoda with a quote written by Darth Vadar</h2>
+    <button class="btn btn-default" id="update"> Darth Vadar invades! </button>
+  </div>
+
+  <div>
+    <h2>Delete Darth Vadar's first quote</h2>
+    <button class="btn btn-danger" id="delete"> Delete first Darth Vadar quote </button>
+  </div>
+
+  <h4>Lists of Quotes</h4>
+  <ul class="quotes">
+    <% for(var i=0; i<quotes.length; i++) { 
+        let d = quotes[i]._id.getTimestamp();
+        let dts = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+
+    %>
+      <li class="quote">
+        <span><%= quotes[i].author %></span>
+        <span><%= quotes[i].quote %></span>
+        <span><%= quotes[i]._id +' <> '+ dts %></span>
+        
+        <a class="text-muted" id="<%=quotes[i]._id%>"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+        <a class="delete text-danger" id="<%=quotes[i]._id%>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+      </li>
+    <% } %>
+    </ul>
+  <hr>
+  <div class="row">
+    <div class="col-sm-6">
+    <h3>Add New Quote</h3>
+      <form action="/quotes" method="POST">
+        <div class="form-group">
+          <label for="exampleInputEmail">Author Name</label>
+          <input type="text" name="author" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Quote</label>
+          <textarea class="form-control" rows="5" name="quote" placeholder="Quotes here..."></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+    <div class="col-sm-6">
+    <!--
+    <% for(var i=0; i<quotes.length; i++) {%>
+      <div class="bs-callout bs-callout-primary">
+        <h4><%= quotes[i].quote %></h4>
+        <small><%= quotes[i].name %></small>
+      </div>
+    <% } %>
+    -->
+    </div>
+  </div>
+  
+</div>
 </div>
 
-<div>
-  <h2>Delete Darth Vadar's first quote</h2>
-  <button id="delete"> Delete first Darth Vadar quote </button>
-</div>
-
-<h4>Lists of Quotes</h4>
-<ul class="quotes">
-  <% for(var i=0; i<quotes.length; i++) {%>
-    <li class="quote">
-      <span><%= quotes[i].name %></span>
-      <span><%= quotes[i].quote %></span>
-      <span><%= quotes[i]._id %></span>
-    </li>
-  <% } %>
-  </ul>
-<hr>
-<form action="/quotes" method="POST">
-  <input type="text" placeholder="name" name="name">
-  <input type="text" placeholder="quote" name="quote">
-  <button type="submit">Submit</button>
-</form>
 </body>
 </html>
